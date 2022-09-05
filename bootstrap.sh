@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "[TASK1] Disable Firewall"
 ufw disable
 
@@ -36,3 +38,12 @@ echo "[TASK6] Add Apt repository"
 
 echo "[TASK7] Install Kubernetes components"
 apt update && apt install -y kubeadm kubelet kubectl
+
+echo "[TASK8] Enable ssh password authentication"
+sed -i 's/^PasswordAuthentication .*/PasswordAuthentication yes/' /etc/ssh/sshd_config
+echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config
+systemctl reload sshd
+
+# Set Root password
+echo "[TASK9] Set root password"
+echo -e "kubeadmin\nkubeadmin" | passwd root >/dev/null 2>&1
